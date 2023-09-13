@@ -1,5 +1,7 @@
 IMPORT("StorageInterface");
 
+let modelOptimization = __config__.getBool("modelOptimization");
+
 function randomInt(min, max) {
 	if (!max) {
 		max = min;
@@ -92,10 +94,15 @@ Callback.addCallback("LevelLeft", function() {
 	LevelDisplayedQueue.isDisplayed = false;
 });
 
+let crossSaplingMesh = new RenderMesh();
+crossSaplingMesh.importFromFile(__dir__ + "res/CrossSaplingModel.obj", "obj", {});
+crossSaplingMesh.rotate(0, Math.PI / 4, 0);
+crossSaplingMesh.scale(6, 6, 6);
+
 let bonsaiPotModel = new ICRender.Model();
 let hoppingBonsaiPotModel = new ICRender.Model();
 let bonsaiPotMesh = new RenderMesh();
-bonsaiPotMesh.importFromFile(__dir__ + "res/model.obj", "obj", {
+bonsaiPotMesh.importFromFile(__dir__ + "res/BonsaiPotModel.obj", "obj", {
 	translate: [0.5, 0, 0.5]
 });
 let hoppingBonsaiPotMesh = bonsaiPotMesh.clone();
@@ -492,8 +499,8 @@ let bonsaiPotPrototype = {
 				LevelDisplayedQueue.run(function() {
 					that.treeAnim = new Animation.Base(that.x + 0.5, that.y + 3 / 16, that.z + 0.5);
 					that.treeAnim.describe({
-						mesh: getTreeMesh(new IdData(Network.serverToLocalId(packet.id), packet.data)),
-						skin: "atlas::terrain",
+						mesh: modelOptimization ? crossSaplingMesh : getTreeMesh(new IdData(Network.serverToLocalId(packet.id), packet.data)),
+						skin: modelOptimization ? ItemModel.getForWithFallback(Network.serverToLocalId(packet.id), packet.data).getWorldTextureName() : "atlas::terrain",
 						scale: 0.000001
 					});
 					that.treeAnim.refresh();
