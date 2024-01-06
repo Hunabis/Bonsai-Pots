@@ -841,13 +841,16 @@ Callback.addCallback("ItemUse", function(c, i, b, is, p) {
 	} else lastCoords = c;
 });*/
 
-let blockModels = FileTools.ReadJSON(__packdir__ + "assets/innercore/icons/block_models.json");
-for (let i = 0; i < 16; i++) {
-	blockModels["99:" + i] = {
-		tex: [["mushroom_brown_bottom", i], ["mushroom_brown_top", i], ["mushroom_brown_west", i], ["mushroom_brown_east", i], ["mushroom_brown_south", i], ["mushroom_brown_north", i]]
+if(!Game.isDedicatedServer || !Game.isDedicatedServer()){
+	let blockModels = FileTools.ReadJSON(__packdir__ + "assets/innercore/icons/block_models.json");
+	for (let i = 0; i < 16; i++) {
+		blockModels["99:" + i] = {
+			tex: [["mushroom_brown_bottom", i], ["mushroom_brown_top", i], ["mushroom_brown_west", i], ["mushroom_brown_east", i], ["mushroom_brown_south", i], ["mushroom_brown_north", i]]
+		};
+		blockModels["100:" + i] = {
+			tex: [["mushroom_red_bottom", i], ["mushroom_red_top", i], ["mushroom_red_west", i], ["mushroom_red_east", i], ["mushroom_red_south", i], ["mushroom_red_north", i]]
+		};
 	};
-	blockModels["100:" + i] = {
-		tex: [["mushroom_red_bottom", i], ["mushroom_red_top", i], ["mushroom_red_west", i], ["mushroom_red_east", i], ["mushroom_red_south", i], ["mushroom_red_north", i]]
-	};
-};
-FileTools.WriteJSON(__packdir__ + "assets/innercore/icons/block_models.json", blockModels);
+
+	FileTools.WriteJSON(__packdir__ + "assets/innercore/icons/block_models.json", blockModels);
+}
